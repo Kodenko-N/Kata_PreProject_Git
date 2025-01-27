@@ -23,3 +23,7 @@ public class Main {
         userService.cleanUsersTable();
     }
 }
+
+
+
+
