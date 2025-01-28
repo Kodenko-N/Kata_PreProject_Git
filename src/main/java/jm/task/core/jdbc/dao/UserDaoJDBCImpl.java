@@ -21,7 +21,7 @@ public class UserDaoJDBCImpl implements UserDao {
                 "  `Id` BIGINT NOT NULL AUTO_INCREMENT," +
                 "  `Name` VARCHAR(45) NOT NULL," +
                 "  `LastName` VARCHAR(45) NOT NULL," +
-                "  `Age` SMALLINT NOT NULL," +
+                "  `Age` TINYINT NOT NULL," +
                 "  PRIMARY KEY (`Id`))";
         try (Statement stmt = Util.getConnection().createStatement()) {
             stmt.executeUpdate(createTable);
@@ -58,18 +58,14 @@ public class UserDaoJDBCImpl implements UserDao {
         }
     }
 
-    public void removeUserById(long id) {
-        String deleteUser = "DELETE FROM USERS WHERE Id = " + id;
-        try (Statement stmt = Util.getConnection().createStatement()) {
-            int res = stmt.executeUpdate(deleteUser);
+    public void removeUserById(long idToRemove) {
+        String deleteUser = "DELETE FROM USERS WHERE Id = ?";
+        try (PreparedStatement stmt = Util.getConnection().prepareStatement(deleteUser)) {
+            stmt.setString(1, String.valueOf(idToRemove));
+            stmt.executeUpdate();
             System.out.println("Line has been deleted");
-            if (res != 0) {
-                System.out.println("Deleted " + res + " lines");
-            } else {
-                System.out.println("Line with id " + id + " not found for delete");
-            }
         } catch (SQLException e) {
-            System.out.println("Eceptiong during line delete process");
+            System.out.println("Exceptiong during line delete process");
             System.out.println(e.getMessage());
         }
     }
@@ -90,7 +86,6 @@ public class UserDaoJDBCImpl implements UserDao {
             System.out.println("Exception at geting users list process");
             System.out.println(e.getMessage());
         }
-
         return userList;
     }
 
