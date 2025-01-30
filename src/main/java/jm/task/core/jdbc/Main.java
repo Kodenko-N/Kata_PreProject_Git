@@ -24,7 +24,7 @@ public class Main {
         for (User u : usersList) {
             System.out.println(u);
         }
-        userService.removeUserById((long) 2);
+        userService.removeUserById(2L);
         userService.cleanUsersTable();
     }
 }
