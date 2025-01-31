@@ -77,7 +77,7 @@ public class UserDaoHibernateImpl implements UserDao {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            String requestToRemove = "DELETE User WHERE id = :id";
+            String requestToRemove = "DELETE FROM User WHERE id = :id";
             Query query = session.createQuery(requestToRemove);
             query.setParameter("id", id);
             int res = query.executeUpdate();
@@ -120,7 +120,7 @@ public class UserDaoHibernateImpl implements UserDao {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            session.createQuery("DELETE User").executeUpdate();
+            session.createSQLQuery("TRUNCATE TABLE Users").executeUpdate();
             transaction.commit();
             System.out.println("The table cleared by Hibernate");
         } catch (Exception e) {
